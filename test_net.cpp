@@ -29,21 +29,15 @@ void removeFileExtension(const char *name_src, char *name_dest)
 
 int main(int argc, char **argv)
 {
-	std::string model_file = "deploy.prototxt";
-	std::string trained_file = "snapshot_iter_21600.caffemodel";
-
-	if (argc < 2)
-	{
-		printf("Usage %s <file filenames>\n", argv[0]);
-		return -1;
-	}
+	if (argc != 4)
+		exit(printf("Usage %s <file filenames> <file prototxt> <file caffemodel>\n", argv[0]));
 
 	FILE *input_file = fopen(argv[1], "rt");
+	std::string model_file = argv[2];
+	std::string trained_file = argv[3];
 	
 	if(input_file == NULL)
-	{
 		exit(printf("Failed to open the file %s\n", argv[1]));
-	}
 
 	// use the gpu and first device
 	int gpu = 1;
@@ -91,24 +85,9 @@ int main(int argc, char **argv)
 	
 			float confidence = result[5*i + 4];
 			if (confidence > 0.0)
-			{
 				fprintf(output_file, "Car 0.00 0 0.00 %.2f %.2f %.2f %.2f 0.00 0.00 0.00 0.00 0.00 0.00 0 %.2f\n", xt, yt, xb, yb, confidence);
-				//cv::rectangle(img, cv::Point(xt,yt), cv::Point(xb,yb), cv::Scalar(0,255,0), 2);
-			}
 		}
-	
-		/*
-		if (img.empty())
-		{
-			printf("image empty\n");
-		}
-		else
-		{
-			cv::imshow("Image", img);
-			cv::waitKey(0);
-		}
-		*/
 	}
-
+	
 	return 0;
 }
