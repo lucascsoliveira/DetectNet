@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 
-#define FNAME_LENGTH 25
+#define FNAME_LENGTH 255
 
 void removeFileExtension(const char *name_src, char *name_dest)
 {
@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 		memset(output_file_name, '\0', FNAME_LENGTH);
 
 		removeFileExtension(input_file_name, output_file_name);
-		sprintf(output_file_name, "%s.txt", output_file_name);
+		sprintf(output_file_name, "%s.txt\n", output_file_name);
 	
 		FILE *output_file = fopen(output_file_name, "w");
 	
