@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 
 		// Read file name from input_file
 		fscanf(input_file, "%[^\n]\n", input_file_name);
-		printf("%s", input_file_name);
+		printf("%s\n", input_file_name);
 		
 		cv::Mat img = cv::imread(input_file_name, -1);
 	
@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 		memset(output_file_name, '\0', FNAME_LENGTH);
 
 		removeFileExtension(input_file_name, output_file_name);
-		sprintf(output_file_name, "%s.txt\n", output_file_name);
+		sprintf(output_file_name, "%s.txt", output_file_name);
 	
 		FILE *output_file = fopen(output_file_name, "w");
 	
@@ -88,6 +88,6 @@ int main(int argc, char **argv)
 				fprintf(output_file, "Car 0.00 0 0.00 %.2f %.2f %.2f %.2f 0.00 0.00 0.00 0.00 0.00 0.00 0 %.2f\n", xt, yt, xb, yb, confidence);
 		}
 	}
-	
+
 	return 0;
 }
