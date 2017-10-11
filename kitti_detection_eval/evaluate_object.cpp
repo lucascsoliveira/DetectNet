@@ -17,9 +17,7 @@ STATIC EVALUATION PARAMETERS
 =======================================================================*/
 
 // holds the number of test images on the server
-//const int32_t N_TESTIMAGES = 7518;
-//const int32_t N_TESTIMAGES = 7480;
-const int32_t N_TESTIMAGES = 501;
+int32_t N_TESTIMAGES = 0;
 
 // easy, moderate and hard evaluation level
 enum DIFFICULTY{EASY=0, MODERATE=1, HARD=2};
@@ -770,7 +768,7 @@ void saveAndPlotPlots(string dir_name,string file_name,string obj_type,vector<do
   system(command);
 }
 
-bool eval(/*string result_sha, */FILE * file_names, string gt_dir, string result_dir, Mail* mail, int top_stats){
+bool eval(FILE * file_names, string gt_dir, string result_dir, Mail* mail, int top_stats){
 
   // set some global parameters
   initGlobals();
@@ -798,7 +796,6 @@ bool eval(/*string result_sha, */FILE * file_names, string gt_dir, string result
 
     // file name
     char file_name[1024];
-    //sprintf(file_name,"%06d.txt",i);
     fscanf(file_names, "%[^\n]\n", file_name);
 
     // read ground truth and result poses
@@ -916,14 +913,15 @@ bool eval(/*string result_sha, */FILE * file_names, string gt_dir, string result
 
 int32_t main (int32_t argc,char *argv[]) {
 
-  if(argc != 4 && argc != 5)
-    exit(printf("Usage %s <file filenames> <path groundtruth> <path result> <int top_stats>(optional)\n", argv[0]));
+  if(argc != 5 && argc != 6)
+    exit(printf("Usage %s <file filenames> <path groundtruth> <path result> <int num_images> <int top_stats>(optional)\n", argv[0]));
   
   // read arguments
   FILE *file_names = fopen(argv[1], "rt");
   string gt_dir = argv[2];
   string result_dir = argv[3];
-  int top_stats = (argc == 5) ? atoi(argv[4]) : 0;
+  N_TESTIMAGES = atoi(argv[4]);
+  int top_stats = (argc == 6) ? atoi(argv[5]) : 0;
 
   // run evaluation
   bool success = eval(file_names, gt_dir, result_dir, new Mail(), top_stats);
